@@ -9,16 +9,16 @@ import {
   Alert,
 } from "react-native";
 import React, { useState } from "react";
-import { Link, useRouter } from "expo-router";
+import { Link, useNavigation, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
 const SignIn = () => {
   const router = useRouter();
+  const navigation = useNavigation();
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleContinue = () => {
-    // Basic validation for 10-digit phone number
     if (
       !phoneNumber ||
       phoneNumber.length !== 10 ||
@@ -30,13 +30,14 @@ const SignIn = () => {
       );
       return;
     }
-
-    router.push("/(auth)/otpVerification");
+    router.push({
+      pathname: "/(auth)/otpVerification",
+      params: { phoneNumber: phoneNumber },
+    });
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Background layers */}
       <LinearGradient
         colors={["#000000", "#000000"]}
         style={styles.baseGradient}
@@ -49,7 +50,6 @@ const SignIn = () => {
         />
       </View>
 
-      {/* Content */}
       <View style={styles.content}>
         <Text style={styles.title}>Get started with{"\n"}your number</Text>
 

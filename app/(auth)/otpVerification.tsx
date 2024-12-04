@@ -7,7 +7,7 @@ import {
   Image,
 } from "react-native";
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import CustomOtpEntry from "@/components/CustomOtpEntry";
 import CustomNumericKeyboard, {
@@ -22,6 +22,7 @@ const OTPVerification = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const otpRef = useRef<any>();
   const bottomSheetRef = useRef<NumericKeyboardRefProps>(null);
+  const { phoneNumber } = useLocalSearchParams<{ phoneNumber: string }>();
 
   const handleVerify = () => {
     if (otp.length === 4) {
@@ -73,19 +74,17 @@ const OTPVerification = () => {
   const handleResend = () => {
     if (timeLeft === 0) {
       setTimeLeft(30);
-      // Add your resend OTP logic here
+      // resend OTP logic
     }
   };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView style={styles.container}>
-        {/* Background layers */}
         <LinearGradient
           colors={["#151515", "#000000"]}
           style={styles.baseGradient}
         />
-        {/* Content */}
         <View style={styles.content}>
           <TouchableOpacity
             style={styles.backButton}
@@ -96,7 +95,7 @@ const OTPVerification = () => {
           <Text style={styles.title}>OTP code verification</Text>
           <Text style={styles.subtitle}>
             We have sent you an SMS with the code to +91
-            {/* Add phone number here */}
+            {phoneNumber}
           </Text>
 
           <TouchableOpacity style={styles.otpContainer} onPress={showKeyboard}>
